@@ -144,3 +144,12 @@ function loadScript(url){
 	script.src = url;
 	document.body.appendChild(script);
 }
+//加载Styles
+function loadStyles(url){
+	var link = document.createElement("link");
+	link.rel = "stylesheet";
+	link.type = "text/css";
+	link.href = url;
+	var head = document.getElementsByTagName("head")[0];
+	head.appendChild(link);
+}
