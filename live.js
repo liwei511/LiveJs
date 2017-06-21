@@ -23,7 +23,7 @@ function getElement(id) {
 var leftPos = (typeof window.screenLeft == "number") ? window.screenLeft : window.screenX;
 var topPos = (typeof window.screenTop == "number") ? window.screenTop : window.screenY;
 
-//Object 排序  .localeCompare("")比较两字符串大小
+//JSON排序  .localeCompare("")比较两字符串大小
 function createComparisonFunction(propertyName){
     return function (object1,object2) {
         var value1 = object1[propertyName];
@@ -137,6 +137,47 @@ function myparser(s) {
         return new Date();
     }
 }
+//验证正则
+function isRegExp (v) {
+  return toString.call(v) === '[object RegExp]'
+}
+
+//转字符串
+function _toString (val) {
+  return val == null
+    ? ''
+    : typeof val === 'object'
+      ? JSON.stringify(val, null, 2)
+      : String(val)
+}
+
+//转数字
+function toNumber (val) {
+  var n = parseFloat(val);
+  return isNaN(n) ? val : n
+}
+//删除数组中元素
+function remove (arr, item) {
+  if (arr.length) {
+    var index = arr.indexOf(item);
+    if (index > -1) {
+      return arr.splice(index, 1)
+    }
+  }
+}
+//简单的bind，比原生快
+function bind (fn, ctx) {
+  function boundFn (a) {
+    var l = arguments.length;
+    return l
+      ? l > 1
+        ? fn.apply(ctx, arguments)
+        : fn.call(ctx, a)
+      : fn.call(ctx)
+  }
+  boundFn._length = fn.length;
+  return boundFn
+}
 //加载script
 function loadScript(url){
 	var script = document.createElement("script");
@@ -144,7 +185,7 @@ function loadScript(url){
 	script.src = url;
 	document.body.appendChild(script);
 }
-//加载Styles
+//加载Style,通过css文件
 function loadStyles(url){
 	var link = document.createElement("link");
 	link.rel = "stylesheet";
@@ -152,4 +193,16 @@ function loadStyles(url){
 	link.href = url;
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(link);
+}
+//加载css（IE中不能访问style子节点）
+function loadStyleString(css){
+	var style = document.createElement("style");
+	style.type = "text/css";
+	try{
+		style.appendChild(document.createTextNode(css));
+	}catch(ex){
+		style.styleSheet.cssText = css;//IE
+	}
+	var head = document.getElementsByTagName("head")[0];
+	head.appendChild(style);
 }
