@@ -206,3 +206,12 @@ function loadStyleString(css){
 	var head = document.getElementsByTagName("head")[0];
 	head.appendChild(style);
 }
+//复制
+function copy(value) {
+        const aux = document.createElement('input');
+        aux.setAttribute('value', value);
+        document.body.appendChild(aux);
+        aux.select();
+        document.execCommand('copy');
+        document.body.removeChild(aux);
+}
